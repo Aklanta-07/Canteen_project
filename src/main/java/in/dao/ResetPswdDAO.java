@@ -28,5 +28,27 @@ public class ResetPswdDAO {
 					
 		}
 	}
+	
+    public boolean resetAdminPassword(FieldsDTO field) {
+		
+		String sql = "UPDATE admin SET password = ? WHERE email = ?";
+		
+		try(Connection con = DatabaseConnection.getConnection();
+				   PreparedStatement pstmt = con.prepareStatement(sql)) {
+			
+			pstmt.setString(1, field.getPassword());
+			pstmt.setString(2, field.getEmail());
+			
+			int rowsAffected = pstmt.executeUpdate();
+			
+			return rowsAffected > 0;
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+					
+		}
+	}
+
 
 }

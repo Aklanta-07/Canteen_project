@@ -134,6 +134,14 @@
                         <span class="mx-2">|</span>
                         <a href="register.jsp" class="text-decoration-none">Create Account</a>
                     </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; font-size: 17px;">
+                        <span style="color: #666;">Not a regular user? </span>
+                        <a href="adminLogin.jsp" style="color: #667eea; font-weight: 500; text-decoration: none;">
+                                Admin Login →
+                        </a>
+                    </div>
+                    
                 </form>
             </div>
         </div>
