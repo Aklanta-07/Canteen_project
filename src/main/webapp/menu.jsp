@@ -175,15 +175,18 @@
             color: #721c24;
         }
         
-        .time-slot {
-            display: inline-block;
-            padding: 5px 12px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            font-size: 12px;
-            color: #6c757d;
-            margin-top: 10px;
-        }
+       .time-slot {
+           display: inline-block;
+           padding: 5px 10px;
+           background: #e3f2fd;
+           border-radius: 20px;
+           font-size: 13px;
+           color: #1976d2;
+           margin-top: 9px;
+           font-weight: 500;
+           border: 2px solid #1976d2;
+           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+       }
         
         .no-items {
             text-align: center;
@@ -229,7 +232,7 @@
             <a href="notifications.jsp" class="menu-item">
                 <i class="fas fa-bell"></i><span>Notifications</span>
             </a>
-            <a href="LogoutServlet" class="menu-item">
+            <a href="logout" class="menu-item">
                 <i class="fas fa-sign-out-alt"></i><span>Logout</span>
             </a>
         </div>
@@ -288,7 +291,7 @@
             
             <div class="menu-grid">
                 <%
-                    String sql = "SELECT * FROM menu_items WHERE category = ? AND availability = 'available' ORDER BY item_name";
+                    String sql = "SELECT * FROM menus WHERE MEAL_TYPE = ? AND availability = 'available' ORDER BY DISH_NAME";
                     pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, category);
                     rs = pstmt.executeQuery();
@@ -299,14 +302,14 @@
                 %>
                 
                 <div class="menu-item-card">
-                    <div class="item-name"><%= rs.getString("item_name") %></div>
+                    <div class="item-name"><%= rs.getString("DISH_NAME") %></div>
                     <div class="item-description"><%= rs.getString("description") %></div>
                     
                     <% if(rs.getString("time_slot") != null) { %>
                         <div class="time-slot">
                             <i class="fas fa-clock"></i> <%= rs.getString("time_slot") %>
                         </div>
-                    <% } %>
+                    <% } %>  
                     
                     <div class="item-footer">
                         <div class="item-price">₹<%= rs.getDouble("price") %></div>

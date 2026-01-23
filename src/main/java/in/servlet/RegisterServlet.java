@@ -24,7 +24,7 @@ public class RegisterServlet extends HttpServlet{
 		String fullName = req.getParameter("fullname");
 		String userName = req.getParameter("username");
 		String email = req.getParameter("email");
-		String phoneNo = req.getParameter("phone");
+		String phoneNo = req.getParameter("phone").trim();
 		String userType = req.getParameter("usertype");
 		String password = req.getParameter("password");
 		String confirmpassword = req.getParameter("confirmpassword");
@@ -54,12 +54,12 @@ public class RegisterServlet extends HttpServlet{
         }
 		
 		FieldsDTO field = new FieldsDTO();
-		field.setFullName(fullName);
-		field.setUserName(userName);
-		field.setEmail(email);
+		field.setFullName(fullName.trim());
+		field.setUserName(userName.trim());
+		field.setEmail(email.trim());
 		field.setPhoneNo(Integer.parseInt(phoneNo));
-		field.setUserType(userType);
-		field.setPassword(password);
+		field.setUserType(userType.trim());
+		field.setPassword(password.trim());
 		
 		RegisterDAO dao = new RegisterDAO();
 		

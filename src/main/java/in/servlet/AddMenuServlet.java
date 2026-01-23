@@ -26,6 +26,7 @@ public class AddMenuServlet extends HttpServlet{
 		String category = req.getParameter("mealType");
 		double price = Double.parseDouble(req.getParameter("price"));
 		String availability = req.getParameter("availability");
+		String timeSlot = req.getParameter("timeslot");
 		
 		if(itemName == null || itemName.trim().isEmpty()) {
 		    resp.sendRedirect("adminDashboard.jsp?section=add-menu&error=empty_name");
@@ -46,13 +47,19 @@ public class AddMenuServlet extends HttpServlet{
            resp.sendRedirect("adminDashboard.jsp?section=add-menu&error=price_too_high");
 	       return;
 	    }
+	    
+	    if(timeSlot == null || timeSlot.trim().isEmpty()) {
+		    resp.sendRedirect("adminDashboard.jsp?section=add-menu&error=empty_date");
+		    return;
+		}
 
 		
 		MenuDTO dto = new MenuDTO();
-		dto.setItemName(itemName);
-		dto.setCategory(category);
+		dto.setItemName(itemName.trim());
+		dto.setCategory(category.trim());
 		dto.setPrice(price);
-		dto.setAvailability(availability);
+		dto.setAvailability(availability.trim());
+		dto.setTimeSlot(timeSlot.trim());
 		
 		AddMenuDAO dao = new AddMenuDAO();
 		boolean isInserted = dao.insertMenu(dto);

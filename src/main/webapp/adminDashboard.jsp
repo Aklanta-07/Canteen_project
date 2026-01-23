@@ -628,6 +628,16 @@
                                 <option value="unavailable">Unavailable</option>
                             </select>
                         </div>
+                        
+                          <div class="form-group">
+                            <label for="timeslot">Time Slot *</label>
+                            <select id="timeslot" name="timeslot" class="form-control" required>  
+                              <option value="7AM-10AM">7AM-10AM</option>
+                              <option value="1PM-3PM">1PM-3PM</option>
+                              <option value="8PM-11PM">8PM-11PM</option>
+                            </select>
+                        </div>
+                        
                     </div>
 
                     <div style="margin-top: 25px;">

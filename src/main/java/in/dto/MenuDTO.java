@@ -6,7 +6,14 @@ public class MenuDTO {
 	private String category;
 	private double price;
 	private String availability;
+	private String timeSlot;
 	
+	public String getTimeSlot() {
+		return timeSlot;
+	}
+	public void setTimeSlot(String timeSlot) {
+		this.timeSlot = timeSlot;
+	}
 	public String getItemName() {
 		return itemName;
 	}

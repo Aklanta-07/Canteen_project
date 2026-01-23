@@ -33,7 +33,7 @@ public class ResetPasswordServlet extends HttpServlet{
 		
 		FieldsDTO field = new FieldsDTO();
 		field.setEmail(email);
-		field.setPassword(confirmPassword);
+		field.setPassword(confirmPassword.trim());
 		
 		ResetPswdDAO dao = new ResetPswdDAO();
 		try {

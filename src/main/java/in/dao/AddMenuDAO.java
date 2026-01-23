@@ -12,7 +12,7 @@ public class AddMenuDAO {
 	public boolean insertMenu(MenuDTO menu) {
 		
 		String sql =
-				"INSERT INTO menus(dish_name, meal_type, price, availability) VALUES(?, ?, ?, ?)";
+				"INSERT INTO menus(dish_name, meal_type, price, availability, TIME_SLOT) VALUES(?, ?, ?, ?, ?)";
 		
 		 try(Connection con = DatabaseConnection.getConnection();
 				   PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -21,6 +21,7 @@ public class AddMenuDAO {
 				pstmt.setString(2, menu.getCategory());
 				pstmt.setDouble(3, menu.getPrice());
 				pstmt.setString(4, menu.getAvailability());
+				pstmt.setString(5, menu.getTimeSlot());
 							
 				int rowsInserted = pstmt.executeUpdate();
 				
