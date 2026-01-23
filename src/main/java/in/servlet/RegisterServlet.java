@@ -29,6 +29,25 @@ public class RegisterServlet extends HttpServlet{
 		String password = req.getParameter("password");
 		String confirmpassword = req.getParameter("confirmpassword");
 		
+		if(fullName != null) {
+			fullName = fullName.trim();
+		}
+		if(fullName == null && fullName.isEmpty()) {
+			req.setAttribute("error", "Name is required");
+			req.getRequestDispatcher("register.jsp").forward(req, res);
+			return;
+		}
+		if(fullName.isBlank()) {
+			req.setAttribute("error", "Name cannot be only spaces");
+			req.getRequestDispatcher("register.jsp").forward(req, res);
+			return;
+		}
+		if(fullName.length() < 2) {
+			req.setAttribute("error", "Name must be atleast 2 characters");
+			req.getRequestDispatcher("register.jsp").forward(req, res);
+			return;
+		}
+		
 		if (!password.equals(confirmpassword)) {
             res.sendRedirect("register.jsp?error=password");
             return;

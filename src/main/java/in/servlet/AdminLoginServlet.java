@@ -41,9 +41,8 @@ public class AdminLoginServlet extends HttpServlet{
 			try {
 				if(isPresent) {
 					 HttpSession session = req.getSession();
-					 session.setAttribute("userEmail", field.getEmail());  
-					 out.println("Success");
-				    // resp.sendRedirect("home.jsp");
+					 session.setAttribute("adminEmail", field.getEmail());  
+				     resp.sendRedirect("adminDashboard.jsp");
 			         
 				} 
 				 else {

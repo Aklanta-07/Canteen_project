@@ -160,7 +160,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 <input type="text" class="form-control" name="fullname" id="fullname" 
-                                       placeholder="Enter your full name" required>
+                                       placeholder="Enter your full name" pattern=".*\S+.*" minlength="2" required>
                             </div>
                         </div>
                         
