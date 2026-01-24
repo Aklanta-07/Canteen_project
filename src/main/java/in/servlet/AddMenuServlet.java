@@ -22,6 +22,7 @@ public class AddMenuServlet extends HttpServlet{
 	    resp.setContentType("text/html; charset=UTF-8");
     	PrintWriter out = resp.getWriter();
 		
+    	String menuDate = req.getParameter("menuDate");
 		String itemName = req.getParameter("dishName");
 		String category = req.getParameter("mealType");
 		double price = Double.parseDouble(req.getParameter("price"));
@@ -55,6 +56,7 @@ public class AddMenuServlet extends HttpServlet{
 
 		
 		MenuDTO dto = new MenuDTO();
+		dto.setMenuDate(menuDate);
 		dto.setItemName(itemName.trim());
 		dto.setCategory(category.trim());
 		dto.setPrice(price);

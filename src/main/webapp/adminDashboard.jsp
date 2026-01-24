@@ -489,7 +489,7 @@
                     <span class="menu-item-icon">➕</span>
                     <span class="menu-item-text">Add Menu</span>
                 </a>
-                <a class="menu-item" onclick="showSection('menu-list')">
+                <a class="menu-item" href="menuList.jsp">
                     <span class="menu-item-icon">📋</span>
                     <span class="menu-item-text">Menu List</span>
                 </a>
@@ -591,8 +591,8 @@
                                    required
                                    minlength="3"
                                    maxlength="50"
-                                   pattern="^(?=.*[A-Za-z])[A-Za-z\s]+$"
-                                   title="Only letters and spaces allowed, cannot be only spaces">
+                                   pattern="^(?=.*[a-zA-Z])[a-zA-Z\s,]+$"
+                                   title="Only letters, commas and spaces allowed, cannot be only spaces & commas">
                         </div>
 
                         <div class="form-group">
@@ -649,65 +649,7 @@
             
             <!-- Menu List Section -->
             <section id="menu-list" class="content-section">
-                <h2 class="section-header">Menu List</h2>
-                
-                <table class="menu-list-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Meal Type</th>
-                            <th>Dish Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>2026-01-22</td>
-                            <td><span class="badge badge-breakfast">Breakfast</span></td>
-                            <td>Idli Sambar</td>
-                            <td>Vegetarian</td>
-                            <td>₹50</td>
-                            <td>Available</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-edit">✏️ Edit</button>
-                                    <button class="btn-delete">🗑️ Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2026-01-22</td>
-                            <td><span class="badge badge-lunch">Lunch</span></td>
-                            <td>Chicken Biryani</td>
-                            <td>Non-Vegetarian</td>
-                            <td>₹120</td>
-                            <td>Available</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-edit">✏️ Edit</button>
-                                    <button class="btn-delete">🗑️ Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2026-01-22</td>
-                            <td><span class="badge badge-dinner">Dinner</span></td>
-                            <td>Paneer Butter Masala</td>
-                            <td>Vegetarian</td>
-                            <td>₹90</td>
-                            <td>Available</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-edit">✏️ Edit</button>
-                                    <button class="btn-delete">🗑️ Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+               
             </section>
 
             <!-- Profile Section -->

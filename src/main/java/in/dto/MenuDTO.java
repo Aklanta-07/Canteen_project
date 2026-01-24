@@ -7,7 +7,14 @@ public class MenuDTO {
 	private double price;
 	private String availability;
 	private String timeSlot;
+	private String menuDate;
 	
+	public String getMenuDate() {
+		return menuDate;
+	}
+	public void setMenuDate(String menuDate) {
+		this.menuDate = menuDate;
+	}
 	public String getTimeSlot() {
 		return timeSlot;
 	}
