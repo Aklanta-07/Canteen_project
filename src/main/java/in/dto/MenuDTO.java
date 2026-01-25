@@ -8,7 +8,14 @@ public class MenuDTO {
 	private String availability;
 	private String timeSlot;
 	private String menuDate;
+	private Integer menuId;
 	
+	public Integer getMenuId() {
+		return menuId;
+	}
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
 	public String getMenuDate() {
 		return menuDate;
 	}

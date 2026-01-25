@@ -489,7 +489,7 @@
                     <span class="menu-item-icon">➕</span>
                     <span class="menu-item-text">Add Menu</span>
                 </a>
-                <a class="menu-item" href="menuList.jsp">
+                <a class="menu-item" href="menulist">
                     <span class="menu-item-icon">📋</span>
                     <span class="menu-item-text">Menu List</span>
                 </a>
@@ -690,6 +690,14 @@
             // Add active to clicked menu item
             event.target.closest('.menu-item').classList.add('active');
         }
+        
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const section = urlParams.get('section');
+            if (section) {
+                showSection(section);
+            }
+        };
             
         setTimeout(function() {
             var successMsg = document.getElementById('successMsg');
