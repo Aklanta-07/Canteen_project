@@ -249,6 +249,39 @@
             margin-bottom: 20px;
             opacity: 0.3;
         }
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert-success {
+           background: #d4edda;
+           color: #155724;
+           border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+           background: #f8d7da;
+           color: #721c24;
+           border: 1px solid #f5c6cb;
+        }
+        
+        @keyframes slideDown {
+         from {
+           opacity: 0;
+           transform: translateY(-20px);
+         }
+         to {
+           opacity: 1;
+           transform: translateY(0);
+         }
+       }
 
         @media (max-width: 768px) {
             .header {
@@ -272,6 +305,25 @@
 </head>
 <body>
     <div class="container">
+    
+    <c:if test="${param.message == 'deleted'}">
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i> Menu item removed successfully!
+    </div>
+    </c:if>
+
+    <c:if test="${param.error == 'deleteFailed'}">
+    <div class="alert alert-error">
+        <i class="fas fa-times-circle"></i> Failed to remove menu item. Please try again.
+    </div>
+    </c:if>
+    
+    <c:if test="${param.message == 'updated'}">
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i> Menu item update successfully!
+    </div>
+    </c:if>
+    
         <div class="header">
             <h1 class="section-header"><i class="fas fa-utensils"></i> Menu Management</h1>
              <a href="adminDashboard.jsp?section=add-menu" class="add-btn">
@@ -360,10 +412,10 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                 <a href="MenuServlet?action=edit&menuId=${menu.menuId}" class="btn btn-edit">
+                                                 <a href="manage-menu?action=edit&menuId=${menu.menuId}" class="btn btn-edit">
                                                     <i class="fas fa-edit"></i> Edit
                                                  </a>
-                                                 <a href="MenuServlet?action=delete&menuId=${menu.menuId}" 
+                                                 <a href="manage-menu?action=delete&menuId=${menu.menuId}" 
                                                     class="btn btn-delete"
                                                     onclick="return confirm('Are you sure you want to delete ${menu.itemName}?')">
                                                     <i class="fas fa-trash"></i> Delete
@@ -379,5 +431,19 @@
             </form>
         </div>
     </div>
+    
+    <script>
+    setTimeout(function() {
+        var alert = document.querySelector('.alert');
+        if(alert) {
+            alert.style.transition = 'opacity 0.3s';
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.remove();
+            }, 300);
+        }
+    }, 3000); // Hide after 3 seconds
+   </script>
+    
 </body>
 </html>
