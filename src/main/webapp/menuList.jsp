@@ -301,6 +301,47 @@
                 min-width: 800px;
             }
         }
+        
+        .search-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 0 #1565C0,
+                        0 12px 20px rgba(33, 150, 243, 0.4);
+            position: relative;
+            outline: none;
+        }
+
+        .search-btn:hover {
+            background: #1E88E5;
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #1565C0,
+                        0 15px 25px rgba(33, 150, 243, 0.5);
+        }
+
+        .search-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #1565C0,
+                        0 5px 10px rgba(33, 150, 243, 0.4);
+        }
+
+        /* Optional: Add icon */
+        .search-btn::before {
+            content: '🔍';
+            margin-right: 10px;
+            font-size: 15px;
+        }
+
+        /* Pressed effect */
+        .search-btn:focus {
+            outline: none;
+        }
+        
     </style>
 </head>
 <body>
@@ -331,26 +372,25 @@
             </a>
         </div>
 
-        <div class="table-container">
+    <div class="table-container">
+     <form action="menulist" method="post">
             <div class="search-filter">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search by dish name...">
-                </div>
-                <select class="filter-select">
+                <select class="filter-select" name="category">
                     <option value="">All Meal Types</option>
                     <option value="breakfast">Breakfast</option>
                     <option value="lunch">Lunch</option>
                     <option value="dinner">Dinner</option>
                 </select>
-                <select class="filter-select">
+                <select class="filter-select" name="availability">
                     <option value="">All Status</option>
                     <option value="available">Available</option>
                     <option value="unavailable">Unavailable</option>
                 </select>
+                
+                <button type="submit" class="search-btn">Search</button>
             </div>
-
-            <form action="">
+    </form>
+    
                 <table>
                     <thead>
                         <tr>
@@ -428,7 +468,6 @@
                         </c:choose>
                     </tbody>
                 </table>
-            </form>
         </div>
     </div>
     
@@ -443,6 +482,9 @@
             }, 300);
         }
     }, 3000); // Hide after 3 seconds
+    
+    
+    
    </script>
     
 </body>

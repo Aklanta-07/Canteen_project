@@ -221,6 +221,39 @@
             margin-top: 5px;
         }
         
+        .highlighted {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin: 5px 10px;
+            position: relative;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .highlighted::after {
+            content: 'NEW';
+            position: absolute;
+            top: -8px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255,107,107,0.5);
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(102, 126, 234, 0.8); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
         @media (max-width: 768px) {
             .sidebar {
                 left: -260px;
@@ -254,6 +287,10 @@
             <a href="orders.jsp" class="menu-item">
                 <i class="fas fa-history"></i>
                 <span>Order History</span>
+            </a>
+            <a href="calCalculator.jsp" class="menu-item highlighted">
+                <i class="fas fa-calculator"></i>
+                <span>Calorie Calculator</span>
             </a>
             <a href="profile" class="menu-item">
                 <i class="fas fa-user"></i>

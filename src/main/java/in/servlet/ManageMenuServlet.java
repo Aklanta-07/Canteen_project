@@ -1,6 +1,7 @@
 package in.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,7 +28,7 @@ public class ManageMenuServlet extends HttpServlet{
 			handleEdit(req, resp);
 		} else if("delete".equals(action)) {
 			handleDelete(req, resp);
-		}
+		}  
 	}
 	
 	private void handleEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
@@ -109,6 +110,7 @@ public class ManageMenuServlet extends HttpServlet{
 	    menu.setPrice(price);
 	    menu.setAvailability(availability);
 	    
+	    menuDAO = new ManageMenuDAO();
 	    boolean isUpdated = menuDAO.updateMenu(menu);
 	    
 	    if (isUpdated) {
@@ -118,6 +120,7 @@ public class ManageMenuServlet extends HttpServlet{
 	    }
 		
 	}
+	
     
     
     
