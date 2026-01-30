@@ -9,7 +9,14 @@ public class MenuDTO {
 	private String timeSlot;
 	private String menuDate;
 	private Integer menuId;
+	private int stockQuantity;
 	
+	public int getStockQuantity() {
+		return stockQuantity;
+	}
+	public void setStockQuantity(int stockQuantity) {
+		this.stockQuantity = stockQuantity;
+	}
 	public Integer getMenuId() {
 		return menuId;
 	}
