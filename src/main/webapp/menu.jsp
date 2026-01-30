@@ -217,7 +217,7 @@
             <a href="menu.jsp" class="menu-item active">
                 <i class="fas fa-book-open"></i><span>Today's Menu</span>
             </a>
-            <a href="order.jsp" class="menu-item">
+            <a href="order" class="menu-item">
                 <i class="fas fa-shopping-cart"></i><span>Place Order</span>
             </a>
             <a href="orders.jsp" class="menu-item">
@@ -360,7 +360,7 @@
         %>
         
         <div class="text-center mt-4">
-            <a href="order.jsp" class="btn btn-primary btn-lg">
+            <a href="order" class="btn btn-primary btn-lg">
                 <i class="fas fa-shopping-cart"></i> Place Your Order
             </a>
         </div>
