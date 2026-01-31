@@ -10,6 +10,7 @@ import java.util.List;
 import in.dbconnection.DatabaseConnection;
 import in.dto.MenuDTO;
 import in.dto.OrderDTO;
+import in.dto.OrderItemDTO;
 
 public class OrderDAO {
 	
@@ -78,7 +79,59 @@ public class OrderDAO {
 		return generratedOrderId;
 	}
 	
+	public boolean addOrderItems(int orderId, List<OrderItemDTO> items) {
+		String sql = "INSERT INTO order_items (order_id, menu_id, item_name, quantity, unit_price, total_price) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+		
+		 try (Connection con = DatabaseConnection.getConnection();
+	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+			 
+			 for(OrderItemDTO item : items) {
+				  pstmt.setInt(1, orderId);
+	              pstmt.setInt(2, item.getMenuId());
+	              pstmt.setString(3, item.getItemName());
+	              pstmt.setInt(4, item.getQuantity());
+	              pstmt.setDouble(5, item.getUnitPrice());
+	              pstmt.setDouble(6, item.getTotalPrice());
+	              
+	              pstmt.addBatch();
+			 }
+			 
+			 int[] results = pstmt.executeBatch();
+			 
+			 for(int result : results) {
+				 if(result <= 0 ) {
+					 return false;
+				 }
+			 }
+			 
+			 return true;
+			 
+		 } catch(Exception e) {
+			 e.printStackTrace();
+			 return false;
+		 }
+	}
 	
+	public boolean updateMenuStock(int menuId, int quantityOrdered) {
+		
+		String sql = "UPDATE menus SET stock_quantity = stock_quantity - ? WHERE menu_id = ?";
+		
+		 try (Connection con = DatabaseConnection.getConnection();
+	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+			 
+			 pstmt.setInt(1, quantityOrdered);
+			 pstmt.setInt(2, menuId);
+			 
+			 int rowsAffected = pstmt.executeUpdate();
+			 return rowsAffected > 0;
+			 
+		 }catch(Exception e) {
+			 e.printStackTrace();
+			 return false;
+		 }
+		 
+	}
 	
 	
 	
