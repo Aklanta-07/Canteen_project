@@ -63,7 +63,23 @@ public class ManageOrderServlet extends HttpServlet{
 			 double subtotal = jsonCart.get("subtotal").getAsDouble();
 			 double tax = jsonCart.get("tax").getAsDouble();	
 			 double total = jsonCart.get("total").getAsDouble();
-			 JsonArray itemsArray = jsonCart.getAsJsonArray("items");	 
+			 JsonArray itemsArray = jsonCart.getAsJsonArray("items");	
+			 
+			 //check stock availability
+			 for(int i = 0; i < itemsArray.size(); i++) {
+				 JsonObject item = itemsArray.get(i).getAsJsonObject();
+				 int menuId = item.get("id").getAsInt();
+				 int quantity = item.get("quantity").getAsInt();
+				 String itemName = item.get("name").getAsString();
+				 
+				 boolean stockAvailable = orderDAO.checkStockAvailability(menuId, quantity);
+				 
+				 if(!stockAvailable) {
+					 resp.setContentType("application/json");
+		             resp.getWriter().write("{\"success\": false, \"message\": \"Insufficient stock for " + itemName + "\"}");
+		             return; 
+				 }
+			 }
 			 
 			 //set Fields
 			 OrderDTO order = new OrderDTO();
@@ -122,6 +138,8 @@ public class ManageOrderServlet extends HttpServlet{
 	        
 		}
 	}
+	
+	
 	
 	
 	
