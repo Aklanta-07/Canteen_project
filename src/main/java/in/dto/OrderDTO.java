@@ -13,6 +13,7 @@ public class OrderDTO {
     private String paymentStatus;
     private String cancellationReason;
     private Timestamp cancelledAt;
+    
 	public int getOrderId() {
 		return orderId;
 	}
