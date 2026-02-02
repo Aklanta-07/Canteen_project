@@ -284,7 +284,7 @@
                 <i class="fas fa-shopping-cart"></i>
                 <span>Place Order</span>
             </a>
-            <a href="orders.jsp" class="menu-item">
+            <a href="MyOrdersServlet" class="menu-item">
                 <i class="fas fa-history"></i>
                 <span>Order History</span>
             </a>
