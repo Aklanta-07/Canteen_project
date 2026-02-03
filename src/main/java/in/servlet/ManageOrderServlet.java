@@ -30,6 +30,8 @@ public class ManageOrderServlet extends HttpServlet{
 		
 		if("placeOrder".equals(action)) {
 			placeOrder(req, resp);
+		} else if("cancelOrder".equals(action)) {
+			cancelOrder(req, resp);
 		}
 		
 		//later we aill add more functionalities e.g:CncaelOrder, ConfirmOrder
@@ -137,6 +139,34 @@ public class ManageOrderServlet extends HttpServlet{
 	         resp.getWriter().write("{\"success\": false, \"message\": \"Error: " + e.getMessage() + "\"}");
 	        
 		}
+	}
+	
+	private void cancelOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		
+		try {
+			int orderId = Integer.parseInt(req.getParameter("orderId"));
+			String reason = req.getParameter("reason");
+			
+			if(reason == null || reason.isBlank()) {
+				reason = "User requested cancellation";
+			}
+			
+			boolean cancelled = orderDAO.cancelOrder(orderId, reason);
+			
+			if(cancelled) {
+				resp.setContentType("application/json");
+		        resp.getWriter().write("{\"success\": true, \"message\": \"Order cancelled successfully\"}");
+			} else {
+				resp.setContentType("application/json");
+	            resp.getWriter().write("{\"success\": false, \"message\": \"Failed to cancel order\"}");
+			}
+			
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		    resp.setContentType("application/json");
+		    resp.getWriter().write("{\"success\": false, \"message\": \"Error: " + e.getMessage() + "\"}");
+		}
+		
 	}
 	
 	
