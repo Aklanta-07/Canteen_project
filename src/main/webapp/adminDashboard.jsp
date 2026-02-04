@@ -493,6 +493,10 @@
                     <span class="menu-item-icon">📋</span>
                     <span class="menu-item-text">Menu List</span>
                 </a>
+                <a class="menu-item" href="AdminOrdersServlet">
+                    <span class="menu-item-icon">📦</span>
+                    <span class="menu-item-text">Orders</span>
+                </a>
                 <a class="menu-item" onclick="showSection('profile')">
                     <span class="menu-item-icon">👤</span>
                     <span class="menu-item-text">Profile</span>
