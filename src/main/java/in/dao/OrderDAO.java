@@ -320,11 +320,114 @@ public class OrderDAO {
 		}
 	}
 	
+	//For admin-dashboard 
+	public boolean updateOrderStatus(int orderId, String newStatus) {
+		
+		String sql = "UPDATE orders SET order_status = ? WHERE order_id = ?";
+		
+		 try (Connection con = DatabaseConnection.getConnection();
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+			 
+			 pstmt.setString(1, newStatus);
+			 pstmt.setInt(2, orderId);
+			 
+			int rowsAffected =  pstmt.executeUpdate();
+			
+			return rowsAffected > 0;
+			 
+		 }catch(Exception e) {
+			 e.printStackTrace();
+			 return false;
+		 }
+	}
 	
+	public List<OrderDTO> getAllOrders() {
+		
+		String sql = "SELECT * FROM orders ORDER BY order_date DESC";
+		List<OrderDTO> orders = new ArrayList<>();
+		
+		 try (Connection con = DatabaseConnection.getConnection();
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+			 
+			 ResultSet rs = pstmt.executeQuery();	
+			 
+			 while(rs.next()) {
+				 OrderDTO order = new OrderDTO();
+				 order.setOrderId(rs.getInt("order_id"));
+		         order.setUserEmail(rs.getString("user_email"));
+		         order.setOrderDate(rs.getTimestamp("order_date"));
+	             order.setTotalAmount(rs.getDouble("total_amount"));
+	             order.setSubtotal(rs.getDouble("subtotal"));
+    	         order.setTaxAmount(rs.getDouble("tax_amount"));
+		         order.setOrderStatus(rs.getString("order_status"));
+		         order.setPaymentStatus(rs.getString("payment_status"));
+	             order.setCancellationReason(rs.getString("cancellation_reason"));
+		         order.setCancelledAt(rs.getTimestamp("cancelled_at"));
+		         
+		         orders.add(order);
+			 }
+			 
+		 }catch(Exception e) {
+			 e.printStackTrace();
+		 }
+		 
+		 return orders;
+	}
 	
+	public List<OrderDTO> getOrderByStatus(String status) {
+		
+		String sql = "SELECT * FROM orders WHERE order_status = ? ORDER BY order_date DESC";
+		List<OrderDTO> orders = new ArrayList<>();
+		
+		try (Connection con = DatabaseConnection.getConnection();
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+			
+			pstmt.setString(1, status);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderDTO order = new OrderDTO();
+				 order.setOrderId(rs.getInt("order_id"));
+		         order.setUserEmail(rs.getString("user_email"));
+		         order.setOrderDate(rs.getTimestamp("order_date"));
+		         order.setTotalAmount(rs.getDouble("total_amount"));
+	             order.setSubtotal(rs.getDouble("subtotal"));
+	             order.setTaxAmount(rs.getDouble("tax_amount"));
+ 	             order.setOrderStatus(rs.getString("order_status"));
+ 	             order.setPaymentStatus(rs.getString("payment_status"));
+		         order.setCancellationReason(rs.getString("cancellation_reason"));
+		         order.setCancelledAt(rs.getTimestamp("cancelled_at"));
+		         
+		         orders.add(order);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return orders;
+	}
 	
-	
-	
+	public int getOrderCountByStatus(String status) {
+		
+		String sql = "SELECT COUNT(*) FROM orders WHERE order_status = ?";
+		
+		try (Connection con = DatabaseConnection.getConnection();
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+			
+			pstmt.setString(1, status);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt(1);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
 	
 	
 	
@@ -343,3 +446,27 @@ public class OrderDAO {
 	
 	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
