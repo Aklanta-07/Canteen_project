@@ -502,153 +502,180 @@
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
             <div id="modalBody">
-                <!-- Content loaded by JavaScript -->
+                <!-- Content loaded by JS -->
             </div>
         </div>
     </div>
 
     <script>
-        // Update Order Status
-        function updateStatus(orderId, newStatus) {
-            if (confirm('Change order status to ' + newStatus + '?')) {
-                fetch('AdminOrdersServlet', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'action=updateStatus&orderId=' + orderId + '&newStatus=' + newStatus
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('✅ ' + data.message);
-                        window.location.reload();
-                    } else {
-                        alert('❌ ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('❌ Network error. Please try again.');
-                });
-            }
-        }
-
-        // Cancel Order
-        function cancelOrder(orderId) {
-            const reason = prompt('Please provide a reason for cancellation:');
-            
-            if (reason === null) {
-                return;
-            }
-            
-            if (confirm('Are you sure you want to cancel this order?')) {
-                fetch('AdminOrdersServlet', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'action=cancelOrder&orderId=' + orderId + '&reason=' + encodeURIComponent(reason || 'Cancelled by admin')
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('✅ Order cancelled successfully!');
-                        window.location.reload();
-                    } else {
-                        alert('❌ ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('❌ Network error. Please try again.');
-                });
-            }
-        }
-
-        // View Order Details (Modal)
-        function viewOrderDetails(orderId) {
+    // ============================================================
+    // UPDATE ORDER STATUS
+    // ============================================================
+    function updateStatus(orderId, newStatus) {
+        if (confirm('Change order status to ' + newStatus + '?')) {
             fetch('AdminOrdersServlet', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'action=getOrderDetails&orderId=' + orderId
+                body: 'action=updateStatus&orderId=' + orderId + '&newStatus=' + newStatus
             })
             .then(response => response.json())
             .then(data => {
-                if (data.order) {
-                    displayOrderDetails(data.order, data.items);
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    window.location.reload();
+                } else {
+                    alert('❌ ' + data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                alert('❌ Network error. Please try again.');
+            });
+        }
+    }
+
+    // ============================================================
+    // CANCEL ORDER
+    // ============================================================
+    function cancelOrder(orderId) {
+        const reason = prompt('Please provide a reason for cancellation:');
+        
+        if (reason === null) {
+            return; // User clicked cancel
+        }
+        
+        if (confirm('Are you sure you want to cancel this order?')) {
+            fetch('AdminOrdersServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'action=cancelOrder&orderId=' + orderId + '&reason=' + encodeURIComponent(reason || 'Cancelled by admin')
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ Order cancelled successfully!');
+                    window.location.reload();
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Network error. Please try again.');
+            });
+        }
+    }
+
+    // ============================================================
+    // VIEW ORDER DETAILS (MODAL)
+    // ============================================================
+    function viewOrderDetails(orderId) {
+        fetch('AdminOrdersServlet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=getOrderDetails&orderId=' + orderId
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.order) {
+                displayOrderDetails(data.order, data.items);
+            } else {
                 alert('Failed to load order details');
-            });
-        }
-
-        // Display Order Details in Modal
-        function displayOrderDetails(order, items) {
-            const modalBody = document.getElementById('modalBody');
-            
-            let itemsHtml = '';
-            items.forEach(item => {
-                itemsHtml += `
-                    <tr>
-                        <td>${item.itemName}</td>
-                        <td>× ${item.quantity}</td>
-                        <td>₹${item.unitPrice.toFixed(2)}</td>
-                        <td><strong>₹${item.totalPrice.toFixed(2)}</strong></td>
-                    </tr>
-                `;
-            });
-            
-            modalBody.innerHTML = `
-                <div style="margin-bottom: 1.5rem;">
-                    <p><strong>Order ID:</strong> #${order.orderId}</p>
-                    <p><strong>Customer:</strong> ${order.userEmail}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-${order.orderStatus.toLowerCase()}">${order.orderStatus}</span></p>
-                    <p><strong>Payment:</strong> ${order.paymentStatus}</p>
-                </div>
-                
-                <h3 style="margin-bottom: 1rem;">Order Items</h3>
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;">
-                    <thead style="background: var(--bg-light);">
-                        <tr>
-                            <th style="padding: 0.75rem; text-align: left;">Item</th>
-                            <th style="padding: 0.75rem; text-align: left;">Qty</th>
-                            <th style="padding: 0.75rem; text-align: left;">Price</th>
-                            <th style="padding: 0.75rem; text-align: left;">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${itemsHtml}
-                    </tbody>
-                </table>
-                
-                <div style="border-top: 2px solid var(--border); padding-top: 1rem;">
-                    <p><strong>Subtotal:</strong> ₹${order.subtotal.toFixed(2)}</p>
-                    <p><strong>Tax (5%):</strong> ₹${order.taxAmount.toFixed(2)}</p>
-                    <p style="font-size: 1.25rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.5rem;">
-                        <strong>Total:</strong> ₹${Math.round(order.totalAmount)}
-                    </p>
-                </div>
-            `;
-            
-            document.getElementById('orderModal').classList.add('show');
-        }
-
-        // Close Modal
-        function closeModal() {
-            document.getElementById('orderModal').classList.remove('show');
-        }
-
-        // Close modal on outside click
-        document.getElementById('orderModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load order details');
         });
-    </script>
+    }
+
+    // ============================================================
+    // DISPLAY ORDER DETAILS IN MODAL
+    // ============================================================
+   function displayOrderDetails(order, items) {
+    const modalBody = document.getElementById('modalBody');
+    
+    let itemsHtml = '';
+    items.forEach(item => {
+        itemsHtml += 
+            '<tr>' +
+                '<td>' + item.itemName + '</td>' +
+                '<td>× ' + item.quantity + '</td>' +
+                '<td>₹' + item.unitPrice.toFixed(2) + '</td>' +
+                '<td><strong>₹' + item.totalPrice.toFixed(2) + '</strong></td>' +
+            '</tr>';
+    });
+    
+    // Format date
+    const orderDate = new Date(order.orderDate);
+    const formattedDate = orderDate.toLocaleString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    modalBody.innerHTML = 
+        '<div style="margin-bottom: 1.5rem;">' +
+            '<p><strong>Order ID:</strong> #' + order.orderId + '</p>' +
+            '<p><strong>Customer:</strong> ' + order.userEmail + '</p>' +
+            '<p><strong>Date:</strong> ' + formattedDate + '</p>' +
+            '<p><strong>Status:</strong> <span class="status-badge status-' + order.orderStatus.toLowerCase() + '">' + order.orderStatus + '</span></p>' +
+            '<p><strong>Payment:</strong> ' + order.paymentStatus + '</p>' +
+        '</div>' +
+        
+        '<h3 style="margin-bottom: 1rem;">Order Items</h3>' +
+        '<table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;">' +
+            '<thead style="background: var(--bg-light);">' +
+                '<tr>' +
+                    '<th style="padding: 0.75rem; text-align: left;">Item</th>' +
+                    '<th style="padding: 0.75rem; text-align: left;">Qty</th>' +
+                    '<th style="padding: 0.75rem; text-align: left;">Price</th>' +
+                    '<th style="padding: 0.75rem; text-align: left;">Total</th>' +
+                '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+                itemsHtml +
+            '</tbody>' +
+        '</table>' +
+        
+        '<div style="border-top: 2px solid var(--border); padding-top: 1rem;">' +
+            '<p><strong>Subtotal:</strong> ₹' + order.subtotal.toFixed(2) + '</p>' +
+            '<p><strong>Tax (5%):</strong> ₹' + order.taxAmount.toFixed(2) + '</p>' +
+            '<p style="font-size: 1.25rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.5rem;">' +
+                '<strong>Total:</strong> ₹' + Math.round(order.totalAmount) +
+            '</p>' +
+        '</div>';
+    
+    document.getElementById('orderModal').classList.add('show');
+}
+
+    // ============================================================
+    // CLOSE MODAL
+    // ============================================================
+    function closeModal() {
+        document.getElementById('orderModal').classList.remove('show');
+    }
+
+    // Close modal when clicking outside
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('orderModal');
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
