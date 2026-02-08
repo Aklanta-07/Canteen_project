@@ -1,5 +1,10 @@
 package in.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class OrderItemDTO {
 	 private int orderItemId;
 	    private int orderId;
@@ -8,46 +13,5 @@ public class OrderItemDTO {
 	    private int quantity;
 	    private double unitPrice;
 	    private double totalPrice;
-		public int getOrderItemId() {
-			return orderItemId;
-		}
-		public void setOrderItemId(int orderItemId) {
-			this.orderItemId = orderItemId;
-		}
-		public int getOrderId() {
-			return orderId;
-		}
-		public void setOrderId(int orderId) {
-			this.orderId = orderId;
-		}
-		public int getMenuId() {
-			return menuId;
-		}
-		public void setMenuId(int menuId) {
-			this.menuId = menuId;
-		}
-		public String getItemName() {
-			return itemName;
-		}
-		public void setItemName(String itemName) {
-			this.itemName = itemName;
-		}
-		public int getQuantity() {
-			return quantity;
-		}
-		public void setQuantity(int quantity) {
-			this.quantity = quantity;
-		}
-		public double getUnitPrice() {
-			return unitPrice;
-		}
-		public void setUnitPrice(double unitPrice) {
-			this.unitPrice = unitPrice;
-		}
-		public double getTotalPrice() {
-			return totalPrice;
-		}
-		public void setTotalPrice(double totalPrice) {
-			this.totalPrice = totalPrice;
-		}
+		
 }
