@@ -15,7 +15,7 @@ public class MenuListDAO {
 	public List<MenuDTO> fetchMenu() {
 		
 		List<MenuDTO> menus = new ArrayList<>();
-		String sql = "SELECT * FROM menus";
+		String sql = "SELECT * FROM menus WHERE is_active = 'Y'";
 		
 		try(Connection con = DatabaseConnection.getConnection();
 				   Statement stmt = con.createStatement();

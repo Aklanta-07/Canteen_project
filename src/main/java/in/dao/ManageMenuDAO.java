@@ -15,7 +15,7 @@ public class ManageMenuDAO {
 	
 	public boolean deleteMenu(MenuDTO menu) {
 		
-		String sql = "DELETE FROM menus WHERE MENU_ID = ?";
+		String sql = "UPDATE menus SET is_active = 'N' WHERE menu_id = ?";
 		
 		 try(Connection con = DatabaseConnection.getConnection();
 				   PreparedStatement pstmt = con.prepareStatement(sql)) {

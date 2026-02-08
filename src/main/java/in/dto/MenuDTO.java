@@ -10,7 +10,14 @@ public class MenuDTO {
 	private String menuDate;
 	private Integer menuId;
 	private int stockQuantity;
+	private String isActive;
 	
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
 	public int getStockQuantity() {
 		return stockQuantity;
 	}
