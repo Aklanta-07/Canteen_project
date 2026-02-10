@@ -92,7 +92,7 @@ public class ManageMenuDAO {
 	
 	public List<MenuDTO> filterMenu(MenuDTO menuDTO) {
 		
-		StringBuilder sql = new StringBuilder("SELECT * FROM menus WHERE 1 = 1");
+		StringBuilder sql = new StringBuilder("SELECT * FROM menus WHERE 1 = 1 AND  is_active = 'Y'");
 		List<MenuDTO> menus = new ArrayList<>();
 		
 		try {
