@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
+import in.dao.NotificationDAO;
 import in.dao.OrderDAO;
 import in.dto.OrderDTO;
 import in.dto.OrderItemDTO;
@@ -85,11 +86,21 @@ public class AdminOrdersServlet extends HttpServlet{
 			String newStatus = req.getParameter("newStatus");
 			
 			boolean updated = orderDAO.updateOrderStatus(orderId, newStatus);
-			resp.setContentType("application/json");
 			
 			if(updated) {
+				OrderDTO order = orderDAO.getOrderById(orderId);
+				
+				if(order != null) {
+					String message = createNotificationMessage( orderId, newStatus);
+					
+					NotificationDAO notificationDAO = new NotificationDAO();
+					notificationDAO.createNotification(order.getUserEmail(), orderId, message);
+				}
+				
+				resp.setContentType("application/json");
 				resp.getWriter().write("{\"success\": true, \"message\": \"Order status updated to " + newStatus + "\"}");
 			} else {
+				resp.setContentType("application/json");
 				resp.getWriter().write("{\"success\": false, \"message\": \"Failed to update order status\"}");
 			}
 			
@@ -98,6 +109,23 @@ public class AdminOrdersServlet extends HttpServlet{
 		    resp.setContentType("application/json");
 	        resp.getWriter().write("{\"success\": false, \"message\": \"Error: " + e.getMessage() + "\"}");
 		}
+	}
+	
+	private String createNotificationMessage(int orderId, String status) {
+	    switch (status) {
+	        case "CONFIRMED":
+	            return "Your order #" + orderId + " has been confirmed! ";
+	        case "PREPARING":
+	            return "Your order #" + orderId + " is being prepared! ";
+	        case "READY":
+	            return "Your order #" + orderId + " is ready for pickup! ";
+	        case "COMPLETED":
+	            return "Your order #" + orderId + " has been completed. Thank you! ";
+	        case "CANCELLED":
+	            return "Your order #" + orderId + " has been cancelled. ";
+	        default:
+	            return "Your order #" + orderId + " status updated to " + status;
+	    }
 	}
 	
 	private void getOrderDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
