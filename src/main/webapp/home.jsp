@@ -300,10 +300,22 @@
                 <i class="fas fa-comment-dots"></i>
                 <span>Feedback</span>
             </a>
-            <a href="notifications.jsp" class="menu-item">
-                <i class="fas fa-bell"></i>
-                <span>Notifications</span>
-            </a>
+          <a href="NotificationServlet" class="menu-item">
+           <span class="nav-icon">🔔</span>
+          <span>Notifications</span>
+            <%
+               String userEmail = (String) session.getAttribute("email");
+               if (userEmail != null) {
+               in.dao.NotificationDAO notifDAO = new in.dao.NotificationDAO();
+               int count = notifDAO.getUnreadCount(userEmail);
+               if (count > 0) {
+           %>
+                <span class="unread-badge" style="margin-left: auto;"><%= count %></span>
+          <%
+             }
+          }
+       %>
+       </a>
             <a href="logout" class="menu-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
