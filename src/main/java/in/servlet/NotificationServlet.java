@@ -46,9 +46,9 @@ public class NotificationServlet extends HttpServlet {
             markAsRead(req, resp);
         } else if ("markAllRead".equals(action)) {
             markAllAsRead(req, resp);
-        } /*else if ("deleteNotification".equals(action)) {
+        } else if ("deleteNotification".equals(action)) {
             deleteNotification(req, resp);
-        }  */ 
+        }  
 	}
 	
 	private void  markAsRead(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -92,6 +92,25 @@ public class NotificationServlet extends HttpServlet {
             }
 			
 		}catch (Exception e) {
+			e.printStackTrace();
+			resp.setContentType("application/json");
+            resp.getWriter().write("{\"success\": false, \"message\": \"Error: " + e.getMessage() + "\"}");
+		}
+	}
+	
+	private void deleteNotification(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		try {
+			int notificationId = Integer.parseInt(req.getParameter("notificationId"));
+			
+			boolean isDeleted = notificationDAO.deleteNotification(notificationId);
+			
+			resp.setContentType("application/json");
+			if(isDeleted) {
+				resp.getWriter().write("{\"success\": true, \"message\": \"Notification deleted\"}");
+			} else {
+				resp.getWriter().write("{\"success\": false, \"message\": \"Failed to delete notification\"}");
+			}
+		}catch(Exception e) {
 			e.printStackTrace();
 			resp.setContentType("application/json");
             resp.getWriter().write("{\"success\": false, \"message\": \"Error: " + e.getMessage() + "\"}");

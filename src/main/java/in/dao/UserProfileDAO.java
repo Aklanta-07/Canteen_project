@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import in.dbconnection.DatabaseConnection;
 import in.dto.FieldsDTO;
 
-public class UserDAO {
+public class UserProfileDAO {
 	
 	public FieldsDTO fetchUser(FieldsDTO field) {
 		

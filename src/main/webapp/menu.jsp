@@ -229,7 +229,7 @@
             <a href="feedback.jsp" class="menu-item">
                 <i class="fas fa-comment-dots"></i><span>Feedback</span>
             </a>
-            <a href="notifications.jsp" class="menu-item">
+            <a href="NotificationServlet" class="menu-item">
                 <i class="fas fa-bell"></i><span>Notifications</span>
             </a>
             <a href="logout" class="menu-item">

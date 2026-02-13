@@ -145,6 +145,24 @@ public class NotificationDAO {
 		return 0;
 	}
 	
+	public boolean deleteNotification(int notificationId) {
+		String sql = "DELETE FROM notifications WHERE notification_id = ?";
+		
+		try (Connection con = DatabaseConnection.getConnection();
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+			
+			pstmt.setInt(1, notificationId);
+			int rowsAffected = pstmt.executeUpdate();
+			
+			return rowsAffected > 0;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 	
 	
 	

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import in.dao.UserDAO;
+import in.dao.UserProfileDAO;
 import in.dto.FieldsDTO;
 
 @WebServlet("/profile")
@@ -31,7 +31,7 @@ public class UserServlet extends HttpServlet{
 		FieldsDTO dto = new FieldsDTO();
 		dto.setEmail(userEmail);
 		
-		UserDAO dao = new UserDAO();
+		UserProfileDAO dao = new UserProfileDAO();
 		FieldsDTO user = dao.fetchUser(dto);
 		
 		if(user == null) {

@@ -497,7 +497,7 @@
                     <span class="menu-item-icon">📦</span>
                     <span class="menu-item-text">Orders</span>
                 </a>
-                <a class="menu-item" onclick="showSection('profile')">
+                <a class="menu-item" href="admin-profile">
                     <span class="menu-item-icon">👤</span>
                     <span class="menu-item-text">Profile</span>
                 </a>
