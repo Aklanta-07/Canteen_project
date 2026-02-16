@@ -43,4 +43,19 @@ public class MenuListDAO {
 		
 		return menus;
 	}
+	
+	public void updateStatus() {
+		String sql  = "UPDATE menus set AVAILABILITY = 'unavailable' WHERE STOCK_QUANTITY = 0";
+		
+		try(Connection con = DatabaseConnection.getConnection();
+				   Statement stmt = con.createStatement();) {
+			
+			stmt.executeUpdate(sql);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
