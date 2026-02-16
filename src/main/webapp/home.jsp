@@ -280,7 +280,7 @@
                 <i class="fas fa-book-open"></i>
                 <span>Today's Menu</span>
             </a>
-            <a href="order.jsp" class="menu-item">
+            <a href="order" class="menu-item">
                 <i class="fas fa-shopping-cart"></i>
                 <span>Place Order</span>
             </a>

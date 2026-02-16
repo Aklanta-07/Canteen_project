@@ -292,7 +292,7 @@
             <div class="menu-grid">
                 <%
                     String sql =
-                    "SELECT * FROM menus WHERE MEAL_TYPE = ? AND availability = 'available' AND TRUNC(menu_date) = TRUNC(SYSDATE) ORDER BY DISH_NAME";
+                    "SELECT * FROM menus WHERE MEAL_TYPE = ?  AND TRUNC(menu_date) = TRUNC(SYSDATE) AND stock_quantity >= 1 ORDER BY DISH_NAME";
                     pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, category);
                     rs = pstmt.executeQuery();
