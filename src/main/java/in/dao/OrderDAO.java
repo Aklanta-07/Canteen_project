@@ -268,7 +268,7 @@ public class OrderDAO {
 			
 			//restore stock for each item;
 			String restoreStockSql =
-					"UPDATE menus SET stock_quantity = stock_quantity + ? WHERE menu_id = ?";
+					"UPDATE menus SET stock_quantity = stock_quantity + ?, availability = 'available' WHERE menu_id = ?"; 
 			PreparedStatement restoreStockStmt = con.prepareStatement(restoreStockSql);
 			
 			while(rs.next()) {
