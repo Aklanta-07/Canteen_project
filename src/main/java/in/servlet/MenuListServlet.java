@@ -19,6 +19,7 @@ public class MenuListServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MenuListDAO dao = new MenuListDAO();
+		dao.updateStatus();
 		List<MenuDTO> menus = dao.fetchMenu();
 		
 		req.setAttribute("menus", menus);
