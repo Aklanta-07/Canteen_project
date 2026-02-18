@@ -429,7 +429,26 @@ public class OrderDAO {
 		return 0;
 	}
 	
-	
+	public int countOrderByUser(String userEmail) {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM orders WHERE USER_EMAIL = ?";
+		
+		try (Connection conn = DatabaseConnection.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, userEmail);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return count;
+	}
 	
 	
 	

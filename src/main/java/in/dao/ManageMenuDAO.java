@@ -1,5 +1,6 @@
 package in.dao;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -137,6 +138,25 @@ public class ManageMenuDAO {
 		}
 		
 		return menus;
+	}
+	
+	public int countTodaysMenu() {
+		int count  = 0;
+		String sql = "SELECT COUNT(*) FROM menus WHERE TRUNC(menu_date) = TRUNC(SYSDATE)";
+		
+		try(Connection con = DatabaseConnection.getConnection();
+				   Statement stmt = con.createStatement();) {
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return count;
 	}
 	
 	

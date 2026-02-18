@@ -1,11 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  <% // Check if user is logged in
+<%@ page import="in.dto.FieldsDTO" %>
+<%@ page import="in.dao.UserProfileDAO" %>
+<%@ page import="in.dao.OrderDAO" %>
+<%@ page import="in.dao.ManageMenuDAO" %>
+<%@ page import="java.util.*" %>
+<%  
+    // Check if user is logged in
     if(session.getAttribute("userEmail") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
-    String username = (String) session.getAttribute("userEmail");
+    
+    String userEmail = (String) session.getAttribute("userEmail");
+    FieldsDTO dto = new FieldsDTO();
+    dto.setEmail(userEmail);
+    
+    // Get user details from database
+    UserProfileDAO userDAO = new UserProfileDAO();
+    FieldsDTO user = userDAO.fetchUser(dto);
+    
+    String username = userEmail; // default
+    String userType = "User"; // default
+    
+    if (user != null) {
+        userType = user.getUserType() != null ? user.getUserType() : "User";
+    }
+    
+    // Store in session for reuse
+    session.setAttribute("userType", userType);
+    session.setAttribute("userName", username);
+    		
+   ManageMenuDAO menuDAO = new  ManageMenuDAO();
+   OrderDAO orderDAO = new OrderDAO();
+   
+   int  mealsAvailableToday = menuDAO.countTodaysMenu();
+   int userTotalOrders = orderDAO.countOrderByUser(userEmail);
+   
 %>  
 <!DOCTYPE html>
 <html>
@@ -152,7 +183,6 @@
             color: white;
         }
         
-        /* When using <img> tags for real images */
         img.menu-image {
             object-fit: cover;
             display: block;
@@ -262,6 +292,36 @@
                 margin-left: 0;
             }
         }
+        
+        .user-type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        .user-type-student {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .user-type-staff {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .user-type-admin {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .user-type-faculty {
+            background: #fff3cd;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -300,22 +360,26 @@
                 <i class="fas fa-comment-dots"></i>
                 <span>Feedback</span>
             </a>
-          <a href="NotificationServlet" class="menu-item">
-           <span class="nav-icon">🔔</span>
-          <span>Notifications</span>
-            <%
-               String userEmail = (String) session.getAttribute("email");
-               if (userEmail != null) {
-               in.dao.NotificationDAO notifDAO = new in.dao.NotificationDAO();
-               int count = notifDAO.getUnreadCount(userEmail);
-               if (count > 0) {
-           %>
-                <span class="unread-badge" style="margin-left: auto;"><%= count %></span>
-          <%
-             }
-          }
-       %>
-       </a>
+            <a href="NotificationServlet" class="menu-item">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+                <%
+                   String email = (String) session.getAttribute("userEmail");
+                   if (email != null) {
+                       try {
+                           in.dao.NotificationDAO notifDAO = new in.dao.NotificationDAO();
+                           int count = notifDAO.getUnreadCount(email);
+                           if (count > 0) {
+                %>
+                    <span class="badge bg-danger ms-auto"><%= count %></span>
+                <%
+                           }
+                       } catch (Exception e) {
+                           // Handle exception - notification count unavailable
+                       }
+                   }
+                %>
+            </a>
             <a href="logout" class="menu-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
@@ -332,9 +396,17 @@
                 <small class="text-muted">Welcome back!</small>
             </div>
             <div class="user-info">
-                <div>
-                    <div class="fw-bold"><%= username %></div>
-                    <small class="text-muted">Student</small>
+                <div class="text-end">
+                    <div class="fw-bold">
+                        <%= username %>
+                        <%-- Add user type badge with dynamic color based on user type --%>
+                        <span class="user-type-badge 
+                            <%= "student".equalsIgnoreCase(userType) ? "user-type-student" : 
+                               "working".equalsIgnoreCase(userType) ? "user-type-faculty" : "" %>">
+                            <%= userType %>
+                        </span>
+                    </div>
+                  
                 </div>
                 <div class="user-avatar">
                     <%= username.substring(0,1).toUpperCase() %>
@@ -342,10 +414,18 @@
             </div>
         </div>
         
-        <!-- Welcome Section -->
+        <!-- Welcome Section with personalized message based on user type -->
         <div class="welcome-section">
             <h2>Welcome to Our Canteen, <%= username %>!</h2>
             <p class="mb-0">Enjoy delicious, fresh, and healthy meals every day</p>
+            <%-- Show different messages based on user type --%>
+            <% if ("Admin".equalsIgnoreCase(userType)) { %>
+                <p class="mt-2 mb-0"><small>You have administrator privileges</small></p>
+            <% } else if ("Staff".equalsIgnoreCase(userType) || "Faculty".equalsIgnoreCase(userType)) { %>
+                <p class="mt-2 mb-0"><small>Special staff discounts available</small></p>
+            <% } else if ("Student".equalsIgnoreCase(userType)) { %>
+                <p class="mt-2 mb-0"><small>Student meal plans and offers available</small></p>
+            <% } %>
         </div>
         
         <!-- Stats Row -->
@@ -355,7 +435,7 @@
                     <div class="stat-icon text-primary">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <div class="stat-number">3</div>
+                    <div class="stat-number"><%= mealsAvailableToday %></div>
                     <div class="stat-label">Meals Available Today</div>
                 </div>
             </div>
@@ -373,7 +453,7 @@
                     <div class="stat-icon text-warning">
                         <i class="fas fa-receipt"></i>
                     </div>
-                    <div class="stat-number">15</div>
+                    <div class="stat-number"><%= userTotalOrders %></div>
                     <div class="stat-label">Your Total Orders</div>
                 </div>
             </div>
@@ -385,10 +465,6 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="menu-card">
-                        <!-- Option 1: Use real image (uncomment when you have images) -->
-                        <!-- <img src="images/breakfast.jpg" class="menu-image" alt="Breakfast"> -->
-                        
-                        <!-- Option 2: Use icon placeholder (current) -->
                         <div class="menu-image">
                             <i class="fas fa-coffee"></i>
                         </div>
@@ -406,10 +482,6 @@
                 
                 <div class="col-md-4">
                     <div class="menu-card">
-                        <!-- Option 1: Use real image (uncomment when you have images) -->
-                        <!-- <img src="images/lunch.jpg" class="menu-image" alt="Lunch"> -->
-                        
-                        <!-- Option 2: Use icon placeholder (current) -->
                         <div class="menu-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                             <i class="fas fa-hamburger"></i>
                         </div>
@@ -427,10 +499,6 @@
                 
                 <div class="col-md-4">
                     <div class="menu-card">
-                        <!-- Option 1: Use real image (uncomment when you have images) -->
-                        <!-- <img src="images/dinner.jpg" class="menu-image" alt="Dinner"> -->
-                        
-                        <!-- Option 2: Use icon placeholder (current) -->
                         <div class="menu-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
                             <i class="fas fa-pizza-slice"></i>
                         </div>
