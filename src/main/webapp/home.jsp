@@ -37,6 +37,20 @@
    int  mealsAvailableToday = menuDAO.countTodaysMenu();
    int userTotalOrders = orderDAO.countOrderByUser(userEmail);
    
+   Calendar now = Calendar.getInstance();
+   int hour = now.get(Calendar.HOUR_OF_DAY);
+   String canteenStatus = "Closed";
+   String statusColor = "danger";
+   
+   // Canteen timings: 7 AM - 10 AM (Breakfast), 12 PM - 3 PM (Lunch), 7 PM - 9 PM (Dinner)
+   if ((hour >= 7 && hour <= 10) || (hour >= 1 && hour <= 15) || (hour >= 20 && hour <= 23)) {
+       canteenStatus = "Open";
+       statusColor = "success";
+   } else if ((hour > 10 && hour < 1) || (hour > 15 && hour < 20)) {
+       canteenStatus = "Break Time";
+       statusColor = "warning";
+   }
+   
 %>  
 <!DOCTYPE html>
 <html>
@@ -444,7 +458,10 @@
                     <div class="stat-icon text-success">
                         <i class="fas fa-clock"></i>
                     </div>
-                    <div class="stat-number">Open</div>
+                    <div class="stat-number"><span class="status-badge status-<%= canteenStatus.toLowerCase().replace(" ", "-") %>">
+                            <%= canteenStatus %>
+                        </span>
+                    </div>
                     <div class="stat-label">Canteen Status</div>
                 </div>
             </div>
