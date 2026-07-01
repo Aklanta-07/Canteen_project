@@ -124,4 +124,4 @@ database/
 
 ## Author
 
-**Aklanta Swain** — [LinkedIn](https://linkedin.com/in/aklantaswain) | [GitHub](https://github.com/aklantaswain)
+**Aklanta Swain** — [LinkedIn](https://www.linkedin.com/in/aklanta-swain-a7b4342b4/) | [GitHub](https://github.com/Aklanta-07)
